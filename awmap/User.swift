@@ -13,20 +13,24 @@ class User {
     
     func getSessionID(username: String, password: String, completionHandlerForLogin: (success: Bool, error: String?)-> Void ) {
         
+        
         let components = NSURLComponents()
         components.scheme = Constants.UdacityAPI.APIScheme
         components.host = Constants.UdacityAPI.APIHost
         components.path = Constants.UdacityAPI.APIPath
         
         print(components.URL!)
-        let request = NSMutableURLRequest(URL: components.URL!)
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
         request.HTTPMethod = "POST"
-        
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = "{\"udacity\": {\"username\": \(username), \"password\": \(password)}}".dataUsingEncoding(NSUTF8StringEncoding)
+        print("udacity\": {\"username\": \(username), \"password\": \(password)}")
+        request.HTTPBody = "{\"udacity\": {\"username\": \"\(username)\", \"password\": \"\(password)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
+        
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+            
+            
             guard (error == nil) else{
                 completionHandlerForLogin(success: false, error: "\(error)")
                 return
