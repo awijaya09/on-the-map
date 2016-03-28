@@ -16,11 +16,15 @@ struct Constants {
     }
     
     struct UdacityAPI {
-        static let APIScheme = "https"
-        static let APIHost = "www.udacity.com"
-        static let APIPath = "/api/session"
-        static let method = "/session"
+        static let apiScheme = "https"
+        static let apiHost = "www.udacity.com"
+        static let apiPath = "/api/session"
     }
     
+    struct ParseAPI {
+        static let restApiKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+        static let parseAppID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
+        static let getStudentLocationRequestURL = "https://api.parse.com/1/classes/StudentLocation"
+    }
     
 }

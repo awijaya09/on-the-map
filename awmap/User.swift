@@ -15,9 +15,9 @@ class User {
         
         
         let components = NSURLComponents()
-        components.scheme = Constants.UdacityAPI.APIScheme
-        components.host = Constants.UdacityAPI.APIHost
-        components.path = Constants.UdacityAPI.APIPath
+        components.scheme = Constants.UdacityAPI.apiScheme
+        components.host = Constants.UdacityAPI.apiHost
+        components.path = Constants.UdacityAPI.apiPath
         
         print(components.URL!)
         let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
