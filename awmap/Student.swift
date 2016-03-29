@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Student {
+struct Student {
     
     var firstName: String
     var lastName: String
@@ -39,7 +39,7 @@ class Student {
     static func studentFromResult(results: [[String: AnyObject]]) -> [Student]{
         var students = [Student]()
         
-        for result in results {
+        for result in results {                                                                                                                                                                                                                                                                                                                             
             students.append(Student(dictionary: result))
         }
         
