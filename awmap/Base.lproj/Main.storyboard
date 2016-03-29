@@ -206,6 +206,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="fhr-nL-WHU"/>
+                    <connections>
+                        <outlet property="studentListTableView" destination="oKN-Q2-uqP" id="BpX-9Q-jCh"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b6j-iV-8fq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
