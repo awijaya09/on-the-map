@@ -18,7 +18,6 @@
 		6DC697EA1CA9553700478E9A /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC697E91CA9553700478E9A /* MainMapViewController.swift */; };
 		6DC697EC1CA955B400478E9A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DC697EB1CA955B400478E9A /* MapKit.framework */; };
 		6DC697EE1CA957B200478E9A /* UserListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC697ED1CA957B200478E9A /* UserListTableViewController.swift */; };
-		6DC697F01CA958B300478E9A /* StudentLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC697EF1CA958B300478E9A /* StudentLocations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +34,6 @@
 		6DC697E91CA9553700478E9A /* MainMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		6DC697EB1CA955B400478E9A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6DC697ED1CA957B200478E9A /* UserListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserListTableViewController.swift; sourceTree = "<group>"; };
-		6DC697EF1CA958B300478E9A /* StudentLocations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +85,6 @@
 			children = (
 				6D50307E1CA8F65D00675396 /* Constants.swift */,
 				6D5030801CA9189300675396 /* User.swift */,
-				6DC697EF1CA958B300478E9A /* StudentLocations.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -183,7 +180,6 @@
 				6D5030811CA9189300675396 /* User.swift in Sources */,
 				6D50306C1CA8E42000675396 /* LoginViewController.swift in Sources */,
 				6DC697EE1CA957B200478E9A /* UserListTableViewController.swift in Sources */,
-				6DC697F01CA958B300478E9A /* StudentLocations.swift in Sources */,
 				6D50306A1CA8E42000675396 /* AppDelegate.swift in Sources */,
 				6D50307F1CA8F65D00675396 /* Constants.swift in Sources */,
 				6DC697E81CA9494700478E9A /* GCDBlackBox.swift in Sources */,

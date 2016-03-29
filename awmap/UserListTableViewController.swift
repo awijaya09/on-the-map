@@ -9,7 +9,11 @@
 import UIKit
 
 class UserListTableViewController: UITableViewController {
-    var studentLocation = [StudentLocation]()
+    let cellIdentifier = "studentCell"
+    
+    let studentList = [["firstName": "Jarrod", "lastName": "Parkes", "objectID": "JhOtcRkxsh", "latitude": 34.7303688, "longitude": -86.5861037, "mediaURL": "https://www.linkedin.com/in/jarrodparkes"],
+                       ["firstName": "Jessica", "lastName": "Uelmen", "objectID": "kj18GEaWD8", "latitude": 28.1461248, "longitude": -82.756768, "mediaURL": "www.linkedin.com/in/jessicauelmen/en"]]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
       
@@ -29,62 +33,50 @@ class UserListTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return studentList.count
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+        var studentName = ""
+        let student = studentList[indexPath.row] as NSDictionary
+        if let firstName = student["firstName"] as? String {
+            if let lastName = student["lastName"] as? String {
+                studentName = firstName + " " + lastName
+                cell.textLabel?.text = studentName
+            }
+        }
+        if let mediaURL = student["mediaURL"] as? String {
+            print(mediaURL)
+            cell.detailTextLabel?.text = mediaURL
+            
+        }else {
+            "unable to find mediaURL"
+        }
+        
+        cell.imageView?.image = UIImage(named: "pin")
+        
         return cell
     }
-    */
+ 
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        guard let mediaURL = tableView.cellForRowAtIndexPath(indexPath)?.detailTextLabel?.text else{
+            let alertController = UIAlertController(title: "Invalid", message: "Invalid Link", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            alertController.addAction(action)
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        if let referenceURL = NSURL(string: mediaURL){
+            UIApplication.sharedApplication().openURL(referenceURL)
+        }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        
 
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

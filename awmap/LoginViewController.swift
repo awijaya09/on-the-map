@@ -29,7 +29,12 @@ class LoginViewController: UIViewController {
         subscribeToNotification(UIKeyboardWillHideNotification, selector: #selector(LoginViewController.keyboardWillHide(_:)))
         usernameTextField.delegate = self
         passwordTextField.delegate = self
-        activityIndicator.hidden = true
+        
+        //adjusting the activity indicator
+        activityIndicator.backgroundColor = (UIColor (white: 0.3, alpha: 0.8))
+        activityIndicator.layer.cornerRadius = 5.0
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.White
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -52,7 +57,6 @@ class LoginViewController: UIViewController {
 
     @IBAction func loginPressed(sender: UIButton) {
         if(!enabled){
-            activityIndicator.hidden = enabled
             activityIndicator.startAnimating()
             enableTextField(usernameTextField)
             enableTextField(passwordTextField)
@@ -72,7 +76,7 @@ class LoginViewController: UIViewController {
               
                 performUpdateOnMain({
                     self.errorLabel.hidden = false
-                    self.errorLabel.text = "Something wrong during login: \(error)"
+                    self.errorLabel.text = "Invalid username/password"
                     self.enableTextField(self.usernameTextField)
                     self.enableTextField(self.passwordTextField)
                     self.loginButton.enabled = self.enabled
