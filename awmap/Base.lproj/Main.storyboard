@@ -164,7 +164,7 @@
             </objects>
             <point key="canvasLocation" x="2947" y="429"/>
         </scene>
-        <!--User List Table View Controller-->
+        <!--Student List-->
         <scene sceneID="xDI-jY-pKj">
             <objects>
                 <tableViewController id="sR6-WM-zHT" customClass="UserListTableViewController" customModule="awmap" customModuleProvider="target" sceneMemberID="viewController">
@@ -177,18 +177,18 @@
                                 <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ueb-JB-sho" id="lyG-Lp-dgH">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TBP-Yf-mhg">
-                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
+                                            <rect key="frame" x="15" y="6" width="31.5" height="19.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tpl-Jm-FmT">
-                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
+                                            <rect key="frame" x="15" y="25.5" width="40.5" height="13.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -203,7 +203,9 @@
                             <outlet property="delegate" destination="sR6-WM-zHT" id="dYa-JG-UDQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="fhr-nL-WHU"/>
+                    <navigationItem key="navigationItem" title="Student List" id="fhr-nL-WHU">
+                        <barButtonItem key="rightBarButtonItem" title="Pin" id="6fW-4U-Zu4"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="studentListTableView" destination="oKN-Q2-uqP" id="BpX-9Q-jCh"/>
                     </connections>
@@ -212,10 +214,10 @@
             </objects>
             <point key="canvasLocation" x="3759" y="1216"/>
         </scene>
-        <!--View Controller-->
+        <!--Location Detail View Controller-->
         <scene sceneID="1Hg-ii-TNc">
             <objects>
-                <viewController id="904-FM-JSw" sceneMemberID="viewController">
+                <viewController id="904-FM-JSw" customClass="LocationDetailViewController" customModule="awmap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aaX-Fw-et6"/>
                         <viewControllerLayoutGuide type="bottom" id="REp-HU-gMy"/>
@@ -242,13 +244,13 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="studying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EgA-91-YvL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="studying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EgA-91-YvL">
                                 <rect key="frame" x="263" y="108" width="74" height="22"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="today?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ffe-Wh-no2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="today?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ffe-Wh-no2">
                                 <rect key="frame" x="273" y="138" width="54" height="22"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
