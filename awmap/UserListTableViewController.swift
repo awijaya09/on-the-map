@@ -11,8 +11,6 @@ import UIKit
 class UserListTableViewController: UITableViewController {
     let cellIdentifier = "studentCell"
    
-  
-    
     
     @IBOutlet var studentListTableView: UITableView!
     

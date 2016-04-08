@@ -29,6 +29,7 @@ class LoginViewController: UIViewController {
         subscribeToNotification(UIKeyboardWillHideNotification, selector: #selector(LoginViewController.keyboardWillHide(_:)))
         usernameTextField.delegate = self
         passwordTextField.delegate = self
+    
         
         //adjusting the activity indicator
         activityIndicator.backgroundColor = (UIColor (white: 0.3, alpha: 0.8))
@@ -118,10 +119,12 @@ extension LoginViewController: UITextFieldDelegate{
     
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+         textField.addTarget(self, action: #selector(LoginViewController.loginPressed(_:)), forControlEvents: .EditingDidEndOnExit)
         textField.resignFirstResponder()
         return true
     }
     
+
     func keyboardWillShow(notification: NSNotification) {
         
             view.frame.origin.y -= getKeyboardHeight(notification)
