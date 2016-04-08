@@ -119,7 +119,7 @@ extension LoginViewController: UITextFieldDelegate{
     
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-         textField.addTarget(self, action: #selector(LoginViewController.loginPressed(_:)), forControlEvents: .EditingDidEndOnExit)
+//         textField.addTarget(self, action: #selector(LoginViewController.loginPressed(_:)), forControlEvents: .EditingDidEndOnExit)
         textField.resignFirstResponder()
         return true
     }

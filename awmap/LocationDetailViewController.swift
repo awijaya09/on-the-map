@@ -10,10 +10,11 @@ import UIKit
 
 class LocationDetailViewController: UIViewController {
 
+    @IBOutlet weak var locationTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        locationTextField.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,14 +23,26 @@ class LocationDetailViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+extension LocationDetailViewController: UITextFieldDelegate{
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    */
+    
+
+    
+    func resignIfFirstResponder(textfield: UITextField) {
+        if textfield.isFirstResponder() {
+            textfield.resignFirstResponder()
+        }
+    }
+    
+    @IBAction func userTapView(sender: AnyObject){
+       resignIfFirstResponder(locationTextField)
+    }
 
 }
