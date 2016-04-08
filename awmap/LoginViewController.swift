@@ -70,7 +70,7 @@ class LoginViewController: UIViewController {
                 performUpdateOnMain({ 
                     self.errorLabel.text = "Login Successful!"
                 })
-                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MainNavigationController") as! UINavigationController
+                let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MainNavigationController") as! UITabBarController
                 self.presentViewController(controller, animated: true, completion: nil)
             }else{
               
@@ -123,15 +123,15 @@ extension LoginViewController: UITextFieldDelegate{
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if(passwordTextField.isFirstResponder()){
+        
             view.frame.origin.y -= getKeyboardHeight(notification)
-        }
+
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if(passwordTextField.isFirstResponder()){
+       
             view.frame.origin.y += getKeyboardHeight(notification)
-        }
+     
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {

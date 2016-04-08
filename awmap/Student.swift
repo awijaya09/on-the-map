@@ -45,4 +45,44 @@ struct Student {
         
         return students
     }
+    
+    static func getStudentList(completionHandlerForStudentList: (result: [Student]?, error: NSError?)-> Void){
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil { // Handle error...
+                completionHandlerForStudentList(result: nil, error: error)
+                return
+            }
+            
+            guard let data = data else{
+                completionHandlerForStudentList(result: nil, error: error)
+                return
+            }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else{
+                completionHandlerForStudentList(result: nil, error: error)
+                return
+            }
+            
+            var parsedResult: AnyObject
+            do{
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            }catch{
+                return
+            }
+            
+            guard let resultArray = parsedResult["results"] as? [[String: AnyObject]] else{
+                completionHandlerForStudentList(result: nil, error: error)
+                return
+            }
+            
+            let students = self.studentFromResult(resultArray)
+            completionHandlerForStudentList(result: students, error: nil)
+        }
+        task.resume()
+    }
+
 }
