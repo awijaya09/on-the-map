@@ -23,6 +23,9 @@ class LocationDetailViewController: UIViewController {
     }
     
 
+    @IBAction func cancelAction(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
 
 

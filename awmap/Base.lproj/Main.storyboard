@@ -194,7 +194,7 @@
                                 <rect key="frame" x="532" y="28" width="48" height="30"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
-                                    <segue destination="6Ga-1y-J0Z" kind="unwind" unwindAction="unwindToMapViewController:" id="JVN-RC-eWB"/>
+                                    <action selector="cancelAction:" destination="904-FM-JSw" eventType="touchUpInside" id="CPc-yJ-V8G"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="opA-Ic-7zM">
@@ -295,7 +295,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tTM-8n-Ci2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="6Ga-1y-J0Z" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="18n-OP-zz8">
                     <connections>
                         <action selector="userTapView:" destination="904-FM-JSw" id="eUT-Q4-9e1"/>
