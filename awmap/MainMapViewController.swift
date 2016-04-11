@@ -24,6 +24,7 @@ class MainMapViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         activityIndicator.startAnimating()
+        darkenImageView.hidden = false
         Student.getStudentList { (result, error) in
             guard (result != nil || error == nil) else {
                 print("Unable to get student list")

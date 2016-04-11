@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
     var keyboardOnScreen = false
     var enabled = false
     
+    @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
@@ -132,31 +133,28 @@ extension LoginViewController: UITextFieldDelegate{
     
 
     func keyboardWillShow(notification: NSNotification) {
-       
-        if (!CGRectContainsPoint(self.view.frame, passwordTextField.frame.origin)){
-                
-                view.frame.origin.y -= getKeyboardHeight(notification)
-        }
-
+        adjustScreen(true, notification: notification)
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if (!CGRectContainsPoint(self.view.frame, passwordTextField.frame.origin)){
-            
-            view.frame.origin.y += getKeyboardHeight(notification)
-        }
-
-     
+        adjustScreen(false, notification: notification)
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
-        if (passwordTextField.editing){
-            return keyboardSize.CGRectValue().height
-        }
-        return 0
-
+        
+        return keyboardSize.CGRectValue().height
+       
+    }
+    
+    func adjustScreen(onScreen: Bool, notification: NSNotification){
+        
+        let heightChange = (getKeyboardHeight(notification)) * (onScreen ? 1 : -1)
+        mainScrollView.contentInset.bottom += heightChange
+        mainScrollView.scrollIndicatorInsets.bottom += heightChange
+        print(heightChange)
+    
     }
     
     func resignIfFirstResponder(textfield: UITextField) {
