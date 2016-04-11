@@ -12,8 +12,32 @@ import MapKit
 
 class MainMapViewController: UIViewController {
     
+    @IBOutlet weak var darkenImageView: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    @IBAction func unwindToMapViewController(segue: UIStoryboardSegue){
-        
+ 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        activityIndicator.startAnimating()
+        Student.getStudentList { (result, error) in
+            guard (result != nil || error == nil) else {
+                print("Unable to get student list")
+                return
+            }
+            print("Have gotten student List Data")
+            (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList = result!
+            
+            performUpdateOnMain({
+                self.darkenImageView.hidden = true
+                self.activityIndicator.stopAnimating()
+            })
+        }
+    }
+    
+    
 }

@@ -31,11 +31,17 @@ class LoginViewController: UIViewController {
         passwordTextField.delegate = self
     
         
+        
         //adjusting the activity indicator
-        activityIndicator.backgroundColor = (UIColor (white: 0.3, alpha: 0.8))
-        activityIndicator.layer.cornerRadius = 5.0
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.White
+        
+        let usernameTextFieldPaddingView = UIView(frame: CGRectMake(0, 0, 15, self.usernameTextField.frame.height))
+        usernameTextField.leftView = usernameTextFieldPaddingView
+        usernameTextField.leftViewMode = UITextFieldViewMode.Always
+        
+        let passwordTextFieldPaddingView = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField.frame.height))
+        passwordTextField.leftView = passwordTextFieldPaddingView
+        passwordTextField.leftViewMode = UITextFieldViewMode.Always
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -119,21 +125,27 @@ extension LoginViewController: UITextFieldDelegate{
     
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-//         textField.addTarget(self, action: #selector(LoginViewController.loginPressed(_:)), forControlEvents: .EditingDidEndOnExit)
         textField.resignFirstResponder()
         return true
     }
     
+    
 
     func keyboardWillShow(notification: NSNotification) {
-        
-            view.frame.origin.y -= getKeyboardHeight(notification)
+       
+        if (!CGRectContainsPoint(self.view.frame, passwordTextField.frame.origin)){
+                
+                view.frame.origin.y -= getKeyboardHeight(notification)
+        }
 
     }
     
     func keyboardWillHide(notification: NSNotification) {
-       
+        if (!CGRectContainsPoint(self.view.frame, passwordTextField.frame.origin)){
+            
             view.frame.origin.y += getKeyboardHeight(notification)
+        }
+
      
     }
     

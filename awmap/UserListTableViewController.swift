@@ -13,9 +13,6 @@ class UserListTableViewController: UITableViewController {
    
     
     @IBOutlet var studentListTableView: UITableView!
-    @IBAction func unwindToUserListViewController (segue: UIStoryboardSegue){
-        
-    }
      override func viewDidLoad() {
         super.viewDidLoad()
  
@@ -24,18 +21,7 @@ class UserListTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        Student.getStudentList { (result, error) in
-            guard (result != nil || error == nil) else {
-                print("Unable to get student list")
-                return
-            }
-            print("Have gotten student List Data")
-            (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList = result!
-            
-            performUpdateOnMain({ 
-                self.studentListTableView.reloadData()
-            })
-        }
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
