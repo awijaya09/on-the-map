@@ -27,8 +27,26 @@ class UserListTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - Table view data source
+    
+    func getStudentList(){
+        Student.getStudentList { (result, error) in
+            guard (result != nil || error == nil) else {
+                print("Unable to get student list")
+                return
+            }
+            print("Have gotten student List Data")
+            (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList = result!
+            
+            performUpdateOnMain({
+                self.tableView.reloadData()
+            })
+        }
+    }
+    
+    @IBAction func reloadStudentList(sender: AnyObject) {
+        getStudentList()
+    }
+    
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections

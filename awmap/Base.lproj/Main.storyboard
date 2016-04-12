@@ -4,6 +4,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -158,7 +159,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="TwN-dw-pHI">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TwN-dw-pHI">
                                 <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                             </mapView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="w1O-FI-u1L">
@@ -186,15 +187,23 @@
                     </view>
                     <navigationItem key="navigationItem" title="AWMap" id="FiU-4K-Ssb">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="Xed-JM-GBe"/>
-                        <barButtonItem key="rightBarButtonItem" image="pin location" id="N6Z-XU-dae">
-                            <connections>
-                                <segue destination="904-FM-JSw" kind="presentation" id="38e-7T-Wkb"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="refresh" id="vVI-de-k6M">
+                                <connections>
+                                    <action selector="refreshList:" destination="Jqr-1Q-u1P" id="xvV-Nc-5uC"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="pin location" id="N6Z-XU-dae">
+                                <connections>
+                                    <segue destination="904-FM-JSw" kind="presentation" id="38e-7T-Wkb"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="w1O-FI-u1L" id="dQ0-yd-CPq"/>
                         <outlet property="darkenImageView" destination="nxX-70-89q" id="Puk-a2-Ruu"/>
+                        <outlet property="mainMap" destination="TwN-dw-pHI" id="slV-Ye-fG3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mu0-EW-n4r" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -392,18 +401,18 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qhw-mw-rnn" id="Zki-P5-1Bw">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="P2g-xV-KBi">
-                                            <rect key="frame" x="15" y="6" width="31.5" height="19.5"/>
+                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="erC-06-BNn">
-                                            <rect key="frame" x="15" y="25.5" width="40.5" height="13.5"/>
+                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -419,11 +428,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Student List" id="YzB-yK-HxJ">
-                        <barButtonItem key="rightBarButtonItem" image="pin location" id="5h4-md-T1E">
-                            <connections>
-                                <segue destination="904-FM-JSw" kind="presentation" identifier="addPinSegue" id="lYz-eI-nOR"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="refresh" id="KsJ-Uk-30E">
+                                <connections>
+                                    <action selector="reloadStudentList:" destination="IHG-q5-z8a" id="GX6-D1-OdJ"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="pin location" id="5h4-md-T1E">
+                                <connections>
+                                    <segue destination="904-FM-JSw" kind="presentation" identifier="addPinSegue" id="lYz-eI-nOR"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="studentListTableView" destination="yGi-c9-iVi" id="U7X-M3-zFT"/>
@@ -458,8 +474,9 @@
         <image name="list" width="25" height="25"/>
         <image name="map" width="25" height="25"/>
         <image name="pin location" width="25" height="25"/>
+        <image name="refresh" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="38e-7T-Wkb"/>
+        <segue reference="lYz-eI-nOR"/>
     </inferredMetricsTieBreakers>
 </document>

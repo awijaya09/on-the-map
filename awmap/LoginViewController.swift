@@ -10,7 +10,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    var keyboardOnScreen = false
+    var keyboardPresent = false
     var enabled = false
     
     @IBOutlet weak var mainScrollView: UIScrollView!
@@ -83,12 +83,17 @@ class LoginViewController: UIViewController {
             }else{
               
                 performUpdateOnMain({
-                    self.errorLabel.hidden = false
-                    self.errorLabel.text = "Invalid username/password"
                     self.enableTextField(self.usernameTextField)
                     self.enableTextField(self.passwordTextField)
                     self.loginButton.enabled = self.enabled
                     self.enabled = !self.enabled
+                    let alert = UIAlertController(title: "Login Failed", message: "Invalid username/password", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    
+                    alert.addAction(action)
+                    
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
                     self.activityIndicator.stopAnimating()
                 })
                   print("Failed, do better please! \(error)")
@@ -133,11 +138,18 @@ extension LoginViewController: UITextFieldDelegate{
     
 
     func keyboardWillShow(notification: NSNotification) {
-        adjustScreen(true, notification: notification)
+        if (passwordTextField.isFirstResponder()){
+            self.view.frame.origin.y = (getKeyboardHeight(notification)/2) * -1
+            print(getKeyboardHeight(notification))
+        }else if usernameTextField.isFirstResponder(){
+            self.view.frame.origin.y = -50.0
+        }
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        adjustScreen(false, notification: notification)
+        if (passwordTextField.isFirstResponder()){
+            self.view.frame.origin.y = 0
+        }
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
@@ -146,15 +158,6 @@ extension LoginViewController: UITextFieldDelegate{
         
         return keyboardSize.CGRectValue().height
        
-    }
-    
-    func adjustScreen(onScreen: Bool, notification: NSNotification){
-        
-        let heightChange = (getKeyboardHeight(notification)) * (onScreen ? 1 : -1)
-        mainScrollView.contentInset.bottom += heightChange
-        mainScrollView.scrollIndicatorInsets.bottom += heightChange
-        print(heightChange)
-    
     }
     
     func resignIfFirstResponder(textfield: UITextField) {
