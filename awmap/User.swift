@@ -10,6 +10,7 @@ import Foundation
 
 class User {
     var sessionID: String? = nil
+    var uniqueKey: String? = nil
     
     func getSessionID(username: String, password: String, completionHandlerForLogin: (success: Bool, error: String?)-> Void ) {
         
@@ -65,6 +66,11 @@ class User {
                 return
             }
             
+            guard let uniqueKey = account["key"] as? String else{
+                completionHandlerForLogin(success: false, error: "No key")
+                return
+            }
+            
             guard let sessionDict = parsedResult["session"] as? [String: AnyObject] else{
                 completionHandlerForLogin(success: false, error: "failed to get session dictionary")
                 return
@@ -77,8 +83,9 @@ class User {
             
             
             print(sessionID)
-            
+            print(uniqueKey)
             self.sessionID = sessionID
+            self.uniqueKey = uniqueKey
             completionHandlerForLogin(success: true, error: nil)
             
         }

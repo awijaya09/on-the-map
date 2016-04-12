@@ -63,7 +63,7 @@ class UserListTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
         let student = (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList[indexPath.row]
         
-        cell.textLabel?.text = student!.firstName
+        cell.textLabel?.text = student!.firstName + " " + student!.lastName
         cell.detailTextLabel?.text = student!.mediaURL
         cell.imageView?.image = UIImage(named: "pin")
         
