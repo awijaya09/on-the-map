@@ -138,18 +138,21 @@ extension LoginViewController: UITextFieldDelegate{
     
 
     func keyboardWillShow(notification: NSNotification) {
-        if (passwordTextField.isFirstResponder()){
-            self.view.frame.origin.y = (getKeyboardHeight(notification)/2) * -1
-            print(getKeyboardHeight(notification))
-        }else if usernameTextField.isFirstResponder(){
-            self.view.frame.origin.y = -50.0
-        }
+//        if (passwordTextField.isFirstResponder()){
+            var viewRect = self.view.frame
+            viewRect.size.height -= getKeyboardHeight(notification)
+            if(!CGRectContainsPoint(viewRect, loginButton.frame.origin)){
+                self.view.frame.origin.y = (getKeyboardHeight(notification)/2) * -1
+            }
+            else{
+                print("If statement not triggered")
+            }
+         
+           //}
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if (passwordTextField.isFirstResponder()){
             self.view.frame.origin.y = 0
-        }
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {

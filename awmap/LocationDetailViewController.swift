@@ -7,14 +7,45 @@
 //
 
 import UIKit
+import MapKit
 
-class LocationDetailViewController: UIViewController {
+class LocationDetailViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var locationTextField: UITextField!
-    override func viewDidLoad() {
+    @IBOutlet weak var linkTextField: UITextField!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var postMyLocation: UIButton!
+    @IBOutlet weak var findOnTheMapButton: UIButton!
+    
+    @IBOutlet weak var whereAreYouLabel: UILabel!
+    @IBOutlet weak var studyingLabel: UILabel!
+    @IBOutlet weak var todayLabel: UILabel!
+    
+    @IBOutlet weak var middleImageView: UIImageView!
+    
+    var annotation: MKAnnotation!
+    var localSearchRequest: MKLocalSearchRequest!
+    var localSearch: MKLocalSearch!
+    var localSearchResponse: MKLocalSearchResponse!
+    var pointAnnotation: MKPointAnnotation!
+    var pinAnnotationView: MKPinAnnotationView!
+    
+    
+     override func viewDidLoad() {
         super.viewDidLoad()
 
         locationTextField.delegate = self
+        linkTextField.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        linkTextField.hidden = true
+        mapView.hidden = true
+        postMyLocation.enabled = false
+        postMyLocation.hidden = true
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,6 +53,52 @@ class LocationDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func findLocationOnTheMap(sender: UIButton) {
+        performUpdateOnMain { 
+            self.activityIndicator.startAnimating()
+            
+        }
+        localSearchRequest = MKLocalSearchRequest()
+        localSearchRequest.naturalLanguageQuery = locationTextField.text
+        localSearch = MKLocalSearch(request: localSearchRequest)
+        localSearch.startWithCompletionHandler { (localSearchResponse, error) in
+            guard (error == nil) else{
+                print("Error in getting search response")
+                return
+            }
+            
+            guard (localSearchResponse != nil) else{
+                let alertController = UIAlertController(title: "Warning", message: "Place not found", preferredStyle: .Alert)
+                let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                alertController.addAction(action)
+                self.presentViewController(alertController, animated: true, completion: nil)
+                return
+            }
+            
+            self.pointAnnotation = MKPointAnnotation()
+            self.pointAnnotation.title = self.locationTextField.text
+            self.pointAnnotation.coordinate = CLLocationCoordinate2DMake(localSearchResponse!.boundingRegion.center.latitude, localSearchResponse!.boundingRegion.center.longitude)
+            self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
+            self.mapView.centerCoordinate = self.pointAnnotation.coordinate
+            self.mapView.addAnnotation(self.pinAnnotationView.annotation!)
+            self.mapView.region = MKCoordinateRegionMakeWithDistance(self.pointAnnotation.coordinate, 5000, 5000)
+            
+            performUpdateOnMain({ 
+                self.mapView.hidden = false
+                self.linkTextField.hidden = false
+                self.postMyLocation.hidden = false
+                self.postMyLocation.enabled = true
+                self.locationTextField.hidden = true
+                self.whereAreYouLabel.hidden = true
+                self.studyingLabel.hidden = true
+                self.todayLabel.hidden = true
+                self.findOnTheMapButton.enabled = false
+                self.findOnTheMapButton.hidden = true
+                self.activityIndicator.stopAnimating()
+            })
+            
+        }
+    }
 
     @IBAction func cancelAction(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
