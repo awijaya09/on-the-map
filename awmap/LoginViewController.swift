@@ -48,7 +48,10 @@ class LoginViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         errorLabel.hidden = true
-    
+        activityIndicator.stopAnimating()
+        usernameTextField.text = ""
+        passwordTextField.text = ""
+        enabled = false
         
     }
     
@@ -78,6 +81,10 @@ class LoginViewController: UIViewController {
                 performUpdateOnMain({ 
                     self.errorLabel.text = "Login Successful!"
                 })
+                self.activityIndicator.stopAnimating()
+                self.enableTextField(self.usernameTextField)
+                self.enableTextField(self.passwordTextField)
+                self.loginButton.enabled = self.enabled
                 let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MainNavigationController") as! UITabBarController
                 self.presentViewController(controller, animated: true, completion: nil)
             }else{

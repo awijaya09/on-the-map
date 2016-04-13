@@ -186,7 +186,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="AWMap" id="FiU-4K-Ssb">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Xed-JM-GBe"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Xed-JM-GBe">
+                            <connections>
+                                <action selector="logoutUser:" destination="Jqr-1Q-u1P" id="AFe-UP-Js7"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="refresh" id="vVI-de-k6M">
                                 <connections>
@@ -453,6 +457,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Student List" id="YzB-yK-HxJ">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="R5s-dF-Mcs"/>
                         <rightBarButtonItems>
                             <barButtonItem image="refresh" id="KsJ-Uk-30E">
                                 <connections>
@@ -502,6 +507,6 @@
         <image name="refresh" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lYz-eI-nOR"/>
+        <segue reference="38e-7T-Wkb"/>
     </inferredMetricsTieBreakers>
 </document>

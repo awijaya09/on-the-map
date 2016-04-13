@@ -158,7 +158,8 @@ extension LocationDetailViewController: UITextFieldDelegate{
     }
     
     @IBAction func userTapView(sender: AnyObject){
-       resignIfFirstResponder(locationTextField)
+        resignIfFirstResponder(locationTextField)
+        resignIfFirstResponder(linkTextField)
     }
 
 }

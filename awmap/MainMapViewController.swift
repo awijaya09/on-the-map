@@ -47,6 +47,21 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
  
+    @IBAction func logoutUser(sender: AnyObject) {
+        activityIndicator.startAnimating()
+        darkenImageView.hidden = false
+        User.sharedInstance().logoutSession { (success, error) in
+            guard (success || error == nil) else{
+                print("logout failed")
+                return
+            }
+            self.activityIndicator.stopAnimating()
+            self.darkenImageView.hidden = true
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    
     @IBAction func refreshList(sender: AnyObject) {
         getStudentList()
     }
