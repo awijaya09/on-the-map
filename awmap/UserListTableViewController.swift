@@ -31,7 +31,7 @@ class UserListTableViewController: UITableViewController {
     }
     
     @IBAction func logoutSession(sender: AnyObject) {
-        User.sharedInstance().logoutSession { (success, error) in
+        ApiHandling.sharedInstance.logoutSession { (success, error) in
             guard (success || error == nil) else{
                 print("logout failed")
                 return
