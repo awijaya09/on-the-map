@@ -22,7 +22,7 @@ class UserListTableViewController: UITableViewController {
                 return
             }
             print("Have gotten student List Data")
-            (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList = result!
+            ApiHandling.sharedInstance.studentList = result!
             
             performUpdateOnMain({
                 self.tableView.reloadData()
@@ -52,16 +52,16 @@ class UserListTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return ((UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList.count)!
+        return ApiHandling.sharedInstance.studentList.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
-        let student = (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList[indexPath.row]
+        let student =  ApiHandling.sharedInstance.studentList[indexPath.row]
         
-        cell.textLabel?.text = student!.firstName + " " + student!.lastName
-        cell.detailTextLabel?.text = student!.mediaURL
+        cell.textLabel?.text = student.firstName + " " + student.lastName
+        cell.detailTextLabel?.text = student.mediaURL
         cell.imageView?.image = UIImage(named: "pin")
         
         return cell

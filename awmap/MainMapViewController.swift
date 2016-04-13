@@ -43,7 +43,11 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
         darkenImageView.hidden = false
         ApiHandling.sharedInstance.getStudentList { (result, error) in
             guard (error == nil) else {
-                print("Unable to get student list")
+                let alert = UIAlertController(title: "Warning", message: "Unable to get Student List", preferredStyle: .Alert)
+                let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                
+                alert.addAction(action)
+                self.presentViewController(alert, animated: true, completion: nil)
                 return
             }
             
@@ -61,7 +65,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
             }
             
             print("Have gotten student List Data")
-            (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList = result!
+            ApiHandling.sharedInstance.studentList = result!
             
             performUpdateOnMain({
                 self.darkenImageView.hidden = true
@@ -93,7 +97,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
     func getMapAnnotations() -> [MKPointAnnotation]{
         var location: CLLocationCoordinate2D
         var annotations = [MKPointAnnotation]()
-        for student in (UIApplication.sharedApplication().delegate as! AppDelegate).studentList {
+        for student in ApiHandling.sharedInstance.studentList {
             let latitude = Double(student.latitude)
             let longitude = Double(student.longitude)
             location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)

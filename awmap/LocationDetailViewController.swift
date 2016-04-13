@@ -87,6 +87,7 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate {
                     let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
                     alertController.addAction(action)
                     self.presentViewController(alertController, animated: true, completion: nil)
+                    self.activityIndicator.stopAnimating()
                 })
                 return
             }

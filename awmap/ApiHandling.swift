@@ -13,7 +13,8 @@ import MapKit
 class ApiHandling{
     
     static let sharedInstance = ApiHandling()
-    
+    private init(){}
+    var studentList = [Student]()
     
     func getStudentList(completionHandlerForStudentList: (result: [Student]?, error: NSError?)-> Void){
         let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-updatedAt")!)
