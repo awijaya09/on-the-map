@@ -32,10 +32,24 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
         activityIndicator.startAnimating()
         darkenImageView.hidden = false
         Student.getStudentList { (result, error) in
-            guard (result != nil || error == nil) else {
+            guard (error == nil) else {
                 print("Unable to get student list")
                 return
             }
+            
+            guard(result != nil) else{
+                performUpdateOnMain({ 
+                    let alert = UIAlertController(title: "Warning", message: "Unable to get Student List", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    
+                    alert.addAction(action)
+                    self.darkenImageView.hidden = true
+                    self.activityIndicator.stopAnimating()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+                return
+            }
+            
             print("Have gotten student List Data")
             (UIApplication.sharedApplication().delegate as? AppDelegate)?.studentList = result!
             
@@ -101,7 +115,17 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let studentUrl = view.annotation?.subtitle{
-            UIApplication.sharedApplication().openURL(NSURL(string: studentUrl!)!)
+            if (UIApplication.sharedApplication().canOpenURL(NSURL(string: studentUrl!)!)){
+                UIApplication.sharedApplication().openURL(NSURL(string: studentUrl!)!)
+            }else{
+                performUpdateOnMain({ 
+                    let alert = UIAlertController(title: "Oops!", message: "Unable to open media url", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    
+                    alert.addAction(action)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+            }
         }
        
     }

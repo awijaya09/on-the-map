@@ -457,7 +457,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Student List" id="YzB-yK-HxJ">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="R5s-dF-Mcs"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="R5s-dF-Mcs">
+                            <connections>
+                                <action selector="logoutSession:" destination="IHG-q5-z8a" id="apm-YI-3q1"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="refresh" id="KsJ-Uk-30E">
                                 <connections>
@@ -507,6 +511,6 @@
         <image name="refresh" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="38e-7T-Wkb"/>
+        <segue reference="lYz-eI-nOR"/>
     </inferredMetricsTieBreakers>
 </document>

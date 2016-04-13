@@ -13,20 +13,7 @@ class UserListTableViewController: UITableViewController {
    
     
     @IBOutlet var studentListTableView: UITableView!
-     override func viewDidLoad() {
-        super.viewDidLoad()
- 
-        }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
     
     func getStudentList(){
         Student.getStudentList { (result, error) in
@@ -43,6 +30,16 @@ class UserListTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func logoutSession(sender: AnyObject) {
+        User.sharedInstance().logoutSession { (success, error) in
+            guard (success || error == nil) else{
+                print("logout failed")
+                return
+            }
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+    }
     @IBAction func reloadStudentList(sender: AnyObject) {
         getStudentList()
     }

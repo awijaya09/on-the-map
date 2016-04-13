@@ -100,7 +100,12 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate {
         localSearch = MKLocalSearch(request: localSearchRequest)
         localSearch.startWithCompletionHandler { (localSearchResponse, error) in
             guard (error == nil) else{
-                print("Error in getting search response")
+                performUpdateOnMain({ 
+                    let alertController = UIAlertController(title: "Warning", message: "Place not found", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    alertController.addAction(action)
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                })
                 return
             }
             

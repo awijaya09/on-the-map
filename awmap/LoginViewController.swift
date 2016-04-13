@@ -76,6 +76,26 @@ class LoginViewController: UIViewController {
         }
         
         User.sharedInstance().getSessionID(usernameTextField.text!, password: passwordTextField.text!) { (success, error) -> Void in
+          
+            guard (error?.code != -1009) else{
+                print("this guard is invoked")
+                performUpdateOnMain({ 
+                    let alert = UIAlertController(title: "Network Error", message: "Error in network connection", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    
+                    alert.addAction(action)
+                    
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.enableTextField(self.usernameTextField)
+                    self.enableTextField(self.passwordTextField)
+                    self.loginButton.enabled = self.enabled
+                    self.enabled = !self.enabled
+
+                    self.activityIndicator.stopAnimating()
+                })
+                
+                return
+            }
             if success {
                 print("managed to get session ID")
                 performUpdateOnMain({ 
@@ -103,7 +123,7 @@ class LoginViewController: UIViewController {
                     
                     self.activityIndicator.stopAnimating()
                 })
-                  print("Failed, do better please! \(error)")
+                  print("Failed, do better please! \(error!)")
             }
         }
     }

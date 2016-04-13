@@ -11,10 +11,11 @@ import Foundation
 class User {
     var sessionID: String? = nil
     var uniqueKey: String? = nil
-    
+    var firstName: String? = nil
+    var lastName: String? = nil
     
     //logging in and getting user sessionid & Unique key
-    func getSessionID(username: String, password: String, completionHandlerForLogin: (success: Bool, error: String?)-> Void ) {
+    func getSessionID(username: String, password: String, completionHandlerForLogin: (success: Bool, error: NSError?)-> Void ) {
         
         
         let components = NSURLComponents()
@@ -35,17 +36,17 @@ class User {
             
             
             guard (error == nil) else{
-                completionHandlerForLogin(success: false, error: "\(error)")
+                completionHandlerForLogin(success: false, error: error)
                 return
             }
             
             guard let data = data else{
-                completionHandlerForLogin(success: false, error: "No data response")
+                completionHandlerForLogin(success: false, error: error)
                 return
             }
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else{
-                completionHandlerForLogin(success: false, error: "Error in status code \(error)")
+                completionHandlerForLogin(success: false, error: error)
                 return
             }
             
@@ -55,31 +56,31 @@ class User {
             do{
                 parsedResult = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
             }catch{
-                completionHandlerForLogin(success: false, error: "Failure in getting the result \(error)" )
+                print("Parsing data error")
                 return
             }
             guard let account = parsedResult["account"] as? [String: AnyObject] else {
-                completionHandlerForLogin(success: true, error: "Failed to get account details")
+                completionHandlerForLogin(success: true, error: error)
                 return
             }
             
             guard let registered = account["registered"] as? Bool where registered == true else{
-                completionHandlerForLogin(success: false, error:"Username not registered")
+                completionHandlerForLogin(success: false, error:error)
                 return
             }
             
             guard let uniqueKey = account["key"] as? String else{
-                completionHandlerForLogin(success: false, error: "No key")
+                completionHandlerForLogin(success: false, error: error)
                 return
             }
             
             guard let sessionDict = parsedResult["session"] as? [String: AnyObject] else{
-                completionHandlerForLogin(success: false, error: "failed to get session dictionary")
+                completionHandlerForLogin(success: false, error: error)
                 return
             }
             
             guard let sessionID = sessionDict["id"] as? String else {
-                completionHandlerForLogin(success: false, error: "Failed to get session ID")
+                completionHandlerForLogin(success: false, error: error)
                 return
             }
             
@@ -96,7 +97,7 @@ class User {
     }
     
     //logging out and deleting sessionID
-    func logoutSession(completionHandlerForLogout: (success: Bool, error: String?)-> Void) {
+    func logoutSession(completionHandlerForLogout: (success: Bool, error: NSError?)-> Void) {
         let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
         request.HTTPMethod = "DELETE"
         var xsrfCookie: NSHTTPCookie? = nil
@@ -110,17 +111,17 @@ class User {
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             guard (error == nil) else{
-                completionHandlerForLogout(success: false, error: "\(error)")
+                completionHandlerForLogout(success: false, error: error)
                 return
             }
             
             guard let data = data else{
-                completionHandlerForLogout(success: false, error: "No data response")
+                completionHandlerForLogout(success: false, error: error)
                 return
             }
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else{
-                completionHandlerForLogout(success: false, error: "Error in status code \(error)")
+                completionHandlerForLogout(success: false, error: error)
                 return
             }
             
