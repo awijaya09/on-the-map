@@ -75,7 +75,7 @@ class LoginViewController: UIViewController {
             enabled = !enabled
         }
         
-        User.sharedInstance().getSessionID(usernameTextField.text!, password: passwordTextField.text!) { (success, error) -> Void in
+        ApiHandling.sharedInstance.getSessionID(usernameTextField.text!, password: passwordTextField.text!) { (success, error) -> Void in
           
             guard (error?.code != -1009) else{
                 print("this guard is invoked")
@@ -123,7 +123,6 @@ class LoginViewController: UIViewController {
                     
                     self.activityIndicator.stopAnimating()
                 })
-                  print("Failed, do better please! \(error!)")
             }
         }
     }

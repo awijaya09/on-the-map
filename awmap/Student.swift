@@ -46,43 +46,6 @@ struct Student{
         return students
     }
     
-    static func getStudentList(completionHandlerForStudentList: (result: [Student]?, error: NSError?)-> Void){
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation?limit=100&order=-updatedAt")!)
-        request.addValue(Constants.ParseAPI.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(Constants.ParseAPI.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error != nil { // Handle error...
-                completionHandlerForStudentList(result: nil, error: error)
-                return
-            }
-            
-            guard let data = data else{
-                completionHandlerForStudentList(result: nil, error: error)
-                return
-            }
-            
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else{
-                completionHandlerForStudentList(result: nil, error: error)
-                return
-            }
-            
-            var parsedResult: AnyObject
-            do{
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            }catch{
-                return
-            }
-            
-            guard let resultArray = parsedResult["results"] as? [[String: AnyObject]] else{
-                completionHandlerForStudentList(result: nil, error: error)
-                return
-            }
-            
-            let students = self.studentFromResult(resultArray)
-            completionHandlerForStudentList(result: students, error: nil)
-        }
-        task.resume()
-    }
+    
 
 }

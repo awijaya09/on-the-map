@@ -26,12 +26,22 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         getStudentList()
+        ApiHandling.sharedInstance.getUserData(User.sharedInstance.uniqueKey!) { (success, error) in
+            guard (error == nil) else{
+                print("Unable to get user data")
+                return
+            }
+            
+            if success{
+                print("\(User.sharedInstance.firstName) \(User.sharedInstance.lastName)")
+            }
+        }
     }
     
     func getStudentList(){
         activityIndicator.startAnimating()
         darkenImageView.hidden = false
-        Student.getStudentList { (result, error) in
+        ApiHandling.sharedInstance.getStudentList { (result, error) in
             guard (error == nil) else {
                 print("Unable to get student list")
                 return
@@ -64,7 +74,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
     @IBAction func logoutUser(sender: AnyObject) {
         activityIndicator.startAnimating()
         darkenImageView.hidden = false
-        User.sharedInstance().logoutSession { (success, error) in
+        ApiHandling.sharedInstance.logoutSession { (success, error) in
             guard (success || error == nil) else{
                 print("logout failed")
                 return

@@ -55,39 +55,21 @@ class LocationDetailViewController: UIViewController, MKMapViewDelegate {
     
     @IBAction func postLocation(sender: UIButton) {
         mediaUrl = linkTextField.text
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.parse.com/1/classes/StudentLocation")!)
-        request.HTTPMethod = "POST"
-        request.addValue(Constants.ParseAPI.parseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
-        request.addValue(Constants.ParseAPI.restApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = "{\"uniqueKey\": \"\(User.sharedInstance().uniqueKey!)\", \"firstName\": \"\(Constants.ParseAPI.firstName)\", \"lastName\": \"\(Constants.ParseAPI.lastName)\",\"mapString\": \"\(mapString)\", \"mediaURL\": \"\(mediaUrl)\",\"latitude\": \(pointAnnotation.coordinate.latitude), \"longitude\": \(pointAnnotation.coordinate.longitude)}".dataUsingEncoding(NSUTF8StringEncoding)
-        
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { data, response, error in
-            if error != nil { // Handle error…
-                return
-            }
-            guard let data = data else{
-                print("Something wrong in getting the data")
+        ApiHandling.sharedInstance.postLocation(mapString, mediaUrl: mediaUrl, pointAnnotation: pointAnnotation) { (success, error) in
+            guard(error == nil) else{
+                let alertController = UIAlertController(title: "Warning", message: "Unable to post location", preferredStyle: .Alert)
+                let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                alertController.addAction(action)
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
                 return
             }
             
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else{
-                print("Connection error")
-                return
+            if success{
+                 self.dismissViewControllerAnimated(true, completion: nil)
             }
-            
-            var parsedResult: AnyObject
-            do{
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            }catch{
-                return
-            }
-            print(parsedResult)
-
         }
-        task.resume()
-        dismissViewControllerAnimated(true, completion: nil)
+       
         
     }
     @IBAction func findLocationOnTheMap(sender: UIButton) {

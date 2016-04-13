@@ -16,7 +16,7 @@ class UserListTableViewController: UITableViewController {
     
     
     func getStudentList(){
-        Student.getStudentList { (result, error) in
+        ApiHandling.sharedInstance.getStudentList { (result, error) in
             guard (result != nil || error == nil) else {
                 print("Unable to get student list")
                 return
@@ -78,7 +78,17 @@ class UserListTableViewController: UITableViewController {
         }
         
         if let referenceURL = NSURL(string: mediaURL){
-            UIApplication.sharedApplication().openURL(referenceURL)
+            if (UIApplication.sharedApplication().canOpenURL(referenceURL)){
+                UIApplication.sharedApplication().openURL(referenceURL)
+            }else{
+                performUpdateOnMain({
+                    let alert = UIAlertController(title: "Oops!", message: "Unable to open media url", preferredStyle: .Alert)
+                    let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                    
+                    alert.addAction(action)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                })
+            }
         }
 
     }
