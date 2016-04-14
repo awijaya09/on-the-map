@@ -7,18 +7,21 @@
 //
 
 import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController {
 
     var keyboardPresent = false
     var enabled = false
+    let facebookReadPermission = ["public_profile", "email"]
     
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loginWithFacebook: UIButton!
     
     
     override func viewDidLoad() {
@@ -31,8 +34,6 @@ class LoginViewController: UIViewController {
         usernameTextField.delegate = self
         passwordTextField.delegate = self
     
-        
-        
         //adjusting the activity indicator
         
         let usernameTextFieldPaddingView = UIView(frame: CGRectMake(0, 0, 15, self.usernameTextField.frame.height))
@@ -42,12 +43,14 @@ class LoginViewController: UIViewController {
         let passwordTextFieldPaddingView = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField.frame.height))
         passwordTextField.leftView = passwordTextFieldPaddingView
         passwordTextField.leftViewMode = UITextFieldViewMode.Always
+       
+        //Facebook Login        
+        FBSDKAccessToken.setCurrentAccessToken(nil)
         
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        errorLabel.hidden = true
         activityIndicator.stopAnimating()
         usernameTextField.text = ""
         passwordTextField.text = ""
@@ -59,14 +62,44 @@ class LoginViewController: UIViewController {
         super.viewWillDisappear(animated)
         unsubscribeFromAllNotification()
     }
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    //custom facebook login button
+    @IBAction func facebookLoginButtonPressed(sender: AnyObject){
+        activityIndicator.startAnimating()
+        let fbLoginManager: FBSDKLoginManager = FBSDKLoginManager()
+        fbLoginManager.logInWithReadPermissions(["email"], fromViewController: self) { (result, error) in
+            guard (error == nil) else{
+                print("error in custom facebook login")
+                return
+            }
+            let fbLoginResult : FBSDKLoginManagerLoginResult = result
+            if(fbLoginResult.grantedPermissions.contains("email")){
+                print(fbLoginResult.token.tokenString)
+                FBSDKAccessToken.setCurrentAccessToken(fbLoginResult.token)
+                ApiHandling.sharedInstance.loginWithFacebook(FBSDKAccessToken.currentAccessToken().tokenString) { (success, error) in
+                    guard (error == nil && success == true) else{
+                        performUpdateOnMain({
+                            let alert = UIAlertController(title: "Error", message: "Couldn't login with Facebook", preferredStyle: .Alert)
+                            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                            
+                            alert.addAction(action)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        })
+                        
+                        return
+                    }
+                    
+                    performUpdateOnMain({
+                        print("It goes here")
+                        self.activityIndicator.stopAnimating()
+                        let controller = self.storyboard?.instantiateViewControllerWithIdentifier("MainNavigationController") as! UITabBarController
+                        self.presentViewController(controller, animated: true, completion: nil)
+                    })
+                }
+            }
+        }
     }
-
-    @IBAction func loginPressed(sender: UIButton) {
+    
+       @IBAction func loginPressed(sender: UIButton) {
         if(!enabled){
             activityIndicator.startAnimating()
             enableTextField(usernameTextField)
@@ -98,9 +131,6 @@ class LoginViewController: UIViewController {
             }
             if success {
                 print("managed to get session ID")
-                performUpdateOnMain({ 
-                    self.errorLabel.text = "Login Successful!"
-                })
                 self.activityIndicator.stopAnimating()
                 self.enableTextField(self.usernameTextField)
                 self.enableTextField(self.passwordTextField)

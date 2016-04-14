@@ -79,8 +79,10 @@ class MainMapViewController: UIViewController, MKMapViewDelegate {
         activityIndicator.startAnimating()
         darkenImageView.hidden = false
         ApiHandling.sharedInstance.logoutSession { (success, error) in
-            guard (success || error == nil) else{
+            guard (success && error == nil) else{
                 print("logout failed")
+                self.activityIndicator.stopAnimating()
+                self.darkenImageView.hidden = true
                 return
             }
             self.activityIndicator.stopAnimating()

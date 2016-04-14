@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import FBSDKCoreKit
 
 
 class ApiHandling{
@@ -135,6 +136,79 @@ class ApiHandling{
         task.resume()
         
     }
+    //logging in with Facebook
+    func loginWithFacebook(accessToken: NSString, completionHandlerForFacebookLogin: (success: Bool, error: NSError?)-> Void){
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://www.udacity.com/api/session")!)
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.HTTPBody = "{\"facebook_mobile\": {\"access_token\": \"\(accessToken)\"}}".dataUsingEncoding(NSUTF8StringEncoding)
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+            
+            guard (error == nil) else{
+                completionHandlerForFacebookLogin(success: false, error: error)
+                print("error")
+                return
+            }
+            guard let data = data else{
+                completionHandlerForFacebookLogin(success: false, error: error)
+                print("data error")
+                return
+            }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else{
+                completionHandlerForFacebookLogin(success: false, error: error)
+                print("status code error:\(error)")
+                return
+            }
+            
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
+            
+            var parsedResult: AnyObject!
+            do{
+                parsedResult = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
+            }catch{
+                print("Parsing data error")
+                return
+            }
+            guard let account = parsedResult["account"] as? [String: AnyObject] else {
+                completionHandlerForFacebookLogin(success: false, error: error)
+                print("account")
+                return
+            }
+            
+            guard let registered = account["registered"] as? Bool where registered == true else{
+                completionHandlerForFacebookLogin(success: false, error: error)
+                print("registered")
+                return
+            }
+            
+            guard let uniqueKey = account["key"] as? String else{
+                completionHandlerForFacebookLogin(success: false, error: error)
+                return
+            }
+            
+            guard let sessionDict = parsedResult["session"] as? [String: AnyObject] else{
+                completionHandlerForFacebookLogin(success: false, error: error)
+                return
+            }
+            
+            guard let sessionID = sessionDict["id"] as? String else {
+                completionHandlerForFacebookLogin(success: false, error: error)
+                return
+            }
+            
+            
+            print(sessionID)
+            print(uniqueKey)
+            User.sharedInstance.sessionID = sessionID
+            User.sharedInstance.uniqueKey = uniqueKey
+            completionHandlerForFacebookLogin(success: true, error: nil)
+            
+        }
+        task.resume()
+    }
     
     //logging out and deleting sessionID
     func logoutSession(completionHandlerForLogout: (success: Bool, error: NSError?)-> Void) {
@@ -167,6 +241,7 @@ class ApiHandling{
             
             let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
             print(NSString(data: newData, encoding: NSUTF8StringEncoding))
+            FBSDKAccessToken.setCurrentAccessToken(nil)
             completionHandlerForLogout(success: true, error: nil)
         }
         task.resume()
